@@ -15,8 +15,7 @@ The workflow follows these stages:
 3. **Model Training**: Train a Random Forest classifier.  
 4. **Evaluation**: Generate a confusion matrix, classification report, and visualizations.  
 5. **Visualization**: Plot class distribution and model performance metrics.  
-
-![Workflow Diagram](https://via.placeholder.com/600x300?text=Data+Loading+→+Preprocessing+→+Model+Training+→+Evaluation)  
+  
 
 ---
 
@@ -26,7 +25,7 @@ The workflow follows these stages:
   - `numpy`, `pandas`: Data manipulation.  
   - `scikit-learn`: Model training (`RandomForestClassifier`), evaluation.  
   - `matplotlib`, `seaborn`: Data visualization.  
-- **Dataset**: [NSL-KDD](https://www.unb.ca/cic/datasets/nsl.html) (preprocessed version of KDD Cup 1999).  
+- **Dataset**: [NSL-KDD](https://www.kaggle.com/datasets/hassan06/nslkdd) (preprocessed version of KDD Cup 1999).  
 
 ---
 
