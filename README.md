@@ -1,116 +1,114 @@
-# AI-Driven Network Security
+**README.md**  
+# AI-Driven Network Security: Network Intrusion Detection System  
 
-[![Python Version](https://img.shields.io/badge/Python-3.x-blue.svg)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-
-Welcome to the **AI-Driven Network Security** project! This project analyzes network traffic logs using machine learning to detect anomalies and potential cyber threats. The system uses the NSL-KDD dataset, and you can simulate network data without needing physical networking devices.
-
----
-
-## Table of Contents
-
-- [Overview](#overview)
-- [Architecture and Workflow](#architecture-and-workflow)
-- [Installation and Dependencies](#installation-and-dependencies)
-- [Dataset](#dataset)
-- [Usage](#usage)
-- [Visualizations](#visualizations)
-- [Working Principle](#working-principle)
-- [Future Improvements](#future-improvements)
-- [License](#license)
+## 📌 Overview  
+This repository contains an AI-driven network intrusion detection system (NIDS) built using machine learning. The system leverages the NSL-KDD dataset to classify network traffic as normal or malicious, identifying specific attack types. The model uses a **Random Forest classifier** and includes data preprocessing, visualization, and performance evaluation.  
 
 ---
 
-## Overview
+## 🏗️ Architecture  
+The workflow follows these stages:  
+1. **Data Loading**: Load the NSL-KDD dataset (training and testing sets).  
+2. **Preprocessing**:  
+   - Drop irrelevant columns (e.g., `difficulty`).  
+   - One-hot encode categorical features (`protocol_type`, `service`, `flag`).  
+3. **Model Training**: Train a Random Forest classifier.  
+4. **Evaluation**: Generate a confusion matrix, classification report, and visualizations.  
+5. **Visualization**: Plot class distribution and model performance metrics.  
 
-This project is designed to automatically detect abnormal network activities using a machine learning approach. It leverages the NSL-KDD dataset to train a Random Forest classifier, which distinguishes between normal traffic and various types of attacks.
-
-> **Note:** This project does not include any PGSQL (PostgreSQL) components. All data processing is done in Python using libraries like pandas and scikit-learn.
-
----
-
-## Architecture and Workflow
-
-### Architecture
-
-The project is divided into these major components:
-
-1. **Data Ingestion and Preprocessing**
-   - **Data Loading:** Reads the NSL-KDD dataset files (e.g., `KDDTrain+.txt`, `KDDTest+.txt`) from the `archive_2` folder.
-   - **Preprocessing:** Cleans the data, performs one-hot encoding on categorical features (like `protocol_type`, `service`, and `flag`), and aligns the training and testing datasets.
-
-2. **Exploratory Data Analysis (EDA)**
-   - Visualizes the distribution of network traffic classes.
-   - Identifies class imbalances that can affect model performance.
-
-3. **Model Training and Evaluation**
-   - Trains a Random Forest classifier using the preprocessed training data.
-   - Evaluates the classifier using a confusion matrix and classification report.
-
-4. **Anomaly Detection**
-   - Flags potential anomalous records (predicted as attacks) for further review.
-
-### Workflow
-
-1. **Load the Dataset:** Read the NSL-KDD data files.
-2. **Preprocess the Data:** Convert categorical features to numerical values and split data into features and labels.
-3. **Conduct EDA:** Generate plots to inspect class distributions and data patterns.
-4. **Train the Model:** Use the Random Forest classifier on the training dataset.
-5. **Evaluate the Model:** Generate performance metrics and visualize results.
-6. **Detect Anomalies:** Identify and flag suspicious network activity.
+![Workflow Diagram](https://via.placeholder.com/600x300?text=Data+Loading+→+Preprocessing+→+Model+Training+→+Evaluation)  
 
 ---
 
-## Installation and Dependencies
+## 🛠️ Technologies Used  
+- **Python** (Jupyter Notebook)  
+- **Libraries**:  
+  - `numpy`, `pandas`: Data manipulation.  
+  - `scikit-learn`: Model training (`RandomForestClassifier`), evaluation.  
+  - `matplotlib`, `seaborn`: Data visualization.  
+- **Dataset**: [NSL-KDD](https://www.unb.ca/cic/datasets/nsl.html) (preprocessed version of KDD Cup 1999).  
 
-### Installation
+---
 
-Ensure you have **Python 3** installed. Then, install the following dependencies by running this command in your terminal:
+## 📂 Dataset Description  
+The NSL-KDD dataset contains 43 features describing network traffic, including:  
+- **Basic features**: `duration`, `src_bytes`, `dst_bytes`.  
+- **Traffic flags**: `protocol_type`, `service`, `flag`.  
+- **Attack labels**: 39 attack types (e.g., `DoS`, `Probe`, `R2L`, `U2R`) and `normal` traffic.  
 
-```bash
-pip install numpy pandas scikit-learn matplotlib seaborn
+**Training Data**: 125,973 samples  
+**Testing Data**: 22,544 samples  
 
-your_project_directory/
-├── archive_2/
-│   ├── KDDTrain+.txt
-│   └── KDDTest+.txt
-├── README.md
-└── your_notebook_or_script.py
+---
 
-git clone https://github.com/vaskar71/ai-driven-network-security.git
-cd ai-driven-network-security
+## 🚀 Working Process  
+### 1. Data Preprocessing  
+- **Handling Categorical Data**: One-hot encode `protocol_type`, `service`, and `flag`.  
+- **Alignment**: Ensure training and testing datasets have consistent feature columns.  
 
-# Update the file paths based on your directory structure
-train_file_path = "archive_2/KDDTrain+.txt"
-test_file_path = "archive_2/KDDTest+.txt"
+### 2. Model Training  
+A `RandomForestClassifier` is trained with 100 estimators:  
+```python  
+from sklearn.ensemble import RandomForestClassifier  
+rf_classifier = RandomForestClassifier(n_estimators=100, random_state=42)  
+rf_classifier.fit(X_train_encoded, y_train)  
+```
 
-# Define column names
-column_names = [
-    "duration", "protocol_type", "service", "flag", "src_bytes", "dst_bytes",
-    "land", "wrong_fragment", "urgent", "hot", "num_failed_logins", "logged_in",
-    "num_compromised", "root_shell", "su_attempted", "num_root", "num_file_creations",
-    "num_shells", "num_access_files", "num_outbound_cmds", "is_host_login",
-    "is_guest_login", "count", "srv_count", "serror_rate", "srv_serror_rate",
-    "rerror_rate", "srv_rerror_rate", "same_srv_rate", "diff_srv_rate", "srv_diff_host_rate",
-    "dst_host_count", "dst_host_srv_count", "dst_host_same_srv_rate", "dst_host_diff_srv_rate",
-    "dst_host_same_src_port_rate", "dst_host_srv_diff_host_rate", "dst_host_serror_rate",
-    "dst_host_srv_serror_rate", "dst_host_rerror_rate", "dst_host_srv_rerror_rate",
-    "label", "difficulty"
-]
+### 3. Evaluation  
+- **Confusion Matrix**: Visualize true vs. predicted labels.  
+- **Classification Report**: Compute precision, recall, F1-score, and accuracy.  
 
-# Load the training and testing data
-import pandas as pd
+**Results**:  
+- Accuracy: **72%**  
+- Detailed performance per attack class (see [notebook](AI-Driven%20Network%20Security.ipynb)).  
 
-try:
-    train_df = pd.read_csv(train_file_path, header=None, names=column_names)
-    print("Training data loaded successfully. Shape:", train_df.shape)
-except Exception as e:
-    print("Error loading training data:", e)
+### 4. Visualization  
+- **Class Distribution**: Bar plot showing imbalance in attack types.  
+- **Confusion Matrix Heatmap**: Highlight model strengths/weaknesses.  
 
-try:
-    test_df = pd.read_csv(test_file_path, header=None, names=column_names)
-    print("Test data loaded successfully. Shape:", test_df.shape)
-except Exception as e:
-    print("Error loading test data:", e)
+---
 
-![Class Distribution](path_to_image.png)
+## 🛠️ Installation  
+1. **Clone the repository**:  
+   ```bash  
+   git clone https://github.com/yourusername/ai-network-security.git  
+   cd ai-network-security  
+   ```  
+2. **Install dependencies**:  
+   ```bash  
+   pip install numpy pandas scikit-learn matplotlib seaborn jupyter  
+   ```  
+3. **Download the NSL-KDD dataset** and place the files `KDDTrain+.txt` and `KDDTest+.txt` in the `archive_2` folder.  
+
+---
+
+## 🖥️ Usage  
+1. Open the Jupyter notebook:  
+   ```bash  
+   jupyter notebook AI-Driven\ Network\ Security.ipynb  
+   ```  
+2. Run all cells to preprocess data, train the model, and evaluate results.  
+
+---
+
+## 📊 Key Findings  
+- The model achieves **72% accuracy** but struggles with rare attack classes (e.g., `buffer_overflow`, `sqlattack`).  
+- Common attacks like `neptune` and `smurf` are detected with high precision (>95%).  
+- Class imbalance impacts performance (e.g., `guess_passwd` has 0% recall).  
+
+---
+
+## 📝 Future Improvements  
+- **Address Class Imbalance**: Use oversampling (SMOTE) or class weights.  
+- **Hyperparameter Tuning**: Optimize `max_depth`, `n_estimators`, etc.  
+- **Experiment with Other Models**: Try XGBoost, CNN, or LSTM for sequential data.  
+
+---
+
+## 📜 License  
+MIT License. See [LICENSE](LICENSE) for details.  
+
+---
+
+**Contributors**: Vaskar Biswas  
+**Feedback**: vaskarb.cs.20@nitj.ac.in
