@@ -70,8 +70,8 @@ rf_classifier.fit(X_train_encoded, y_train)
 ## 🛠️ Installation  
 1. **Clone the repository**:  
    ```bash  
-   git clone https://github.com/yourusername/ai-network-security.git  
-   cd ai-network-security  
+   git clone https://github.com/Vaskar71/AI-Driven-Anomaly-Detection-in-Network-Security.git  
+   cd ai-network-security 
    ```  
 2. **Install dependencies**:  
    ```bash  
